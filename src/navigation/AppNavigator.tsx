@@ -1,75 +1,81 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 // Import screens
-import HomeScreen from '../screens/HomeScreen';
-import SheetsScreen from '../screens/SheetsScreen';
-import TransactionScreen from '../screens/TransactionScreen';
-import ProfileScreen from '../screens/ProfileScreen';
+import IntroSliderScreen from '../screens/IntroSliderScreen';
+import LoginScreen from '../screens/LoginScreen';
+import MainTabs from './MainTabs';
 
-// Import custom tab bar
-import CustomTabBar from '../components/CustomTabBar';
+// Import theme and store
+import {useAppSelector} from '../store/hooks';
+import {lightTheme, darkTheme} from '../theme';
 
-const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 const AppNavigator = () => {
-  const renderTabBar = (props: any) => <CustomTabBar {...props} />;
+  const {theme} = useAppSelector(state => state.app);
+  const currentTheme = theme === 'dark' ? darkTheme : lightTheme;
 
   return (
     <SafeAreaProvider>
       <NavigationContainer
         theme={{
+          dark: theme === 'dark',
           colors: {
-            background: '#FFFFFF',
-            card: '#FFFFFF',
-            text: '#000000',
-            border: '#FFFFFF',
-            notification: '#007AFF',
+            primary: currentTheme.colors.primary,
+            background: currentTheme.colors.background,
+            card: currentTheme.colors.surface,
+            text: currentTheme.colors.onBackground,
+            border: currentTheme.colors.outline,
+            notification: currentTheme.colors.primary,
           },
         }}>
-        <Tab.Navigator
-          tabBar={renderTabBar}
+        <Stack.Navigator
+          initialRouteName="Intro"
           screenOptions={{
-            headerShown: false, // Remove default top navbar from all screens
-            contentStyle: {
-              backgroundColor: '#FFFFFF', // White background for all screens
+            headerShown: false,
+            cardStyle: {
+              backgroundColor: currentTheme.colors.background,
+            },
+            cardStyleInterpolator: ({current, layouts}) => {
+              return {
+                cardStyle: {
+                  transform: [
+                    {
+                      translateX: current.progress.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [layouts.screen.width, 0],
+                      }),
+                    },
+                  ],
+                },
+              };
             },
           }}>
-          <Tab.Screen
-            name="Home"
-            component={HomeScreen}
+          <Stack.Screen
+            name="Intro"
+            component={IntroSliderScreen}
             options={{
-              title: 'Home',
-              tabBarLabel: 'Home',
+              title: 'Welcome',
             }}
           />
-          <Tab.Screen
-            name="Sheets"
-            component={SheetsScreen}
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
             options={{
-              title: 'Sheets',
-              tabBarLabel: 'Sheets',
+              title: 'Login',
             }}
           />
-          <Tab.Screen
-            name="Transaction"
-            component={TransactionScreen}
+          <Stack.Screen
+            name="MainTabs"
+            component={MainTabs}
             options={{
-              title: 'Transaction',
-              tabBarLabel: 'Transaction',
+              title: 'Main App',
             }}
           />
-          <Tab.Screen
-            name="Profile"
-            component={ProfileScreen}
-            options={{
-              title: 'Profile',
-              tabBarLabel: 'Profile',
-            }}
-          />
-        </Tab.Navigator>
+        </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
   );

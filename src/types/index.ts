@@ -37,13 +37,6 @@ export interface AppState {
   error: string | null;
 }
 
-// Navigation types
-export type RootTabParamList = {
-  Home: undefined;
-  Expenses: undefined;
-  Categories: undefined;
-  Settings: undefined;
-};
 
 // Redux action types
 export interface Action<T = any> {
