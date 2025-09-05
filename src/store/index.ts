@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { MMKV } from 'react-native-mmkv';
 import { persistStore, persistReducer } from 'redux-persist';
 import { combineReducers } from '@reduxjs/toolkit';
+import appReducer from './slices/appSlice';
 
 // Create MMKV storage instance
 const storage = new MMKV();
@@ -22,9 +23,10 @@ const reduxStorage = {
   },
 };
 
-// Placeholder reducers - you can add your actual reducers here
+// Root reducer combining all slices
 const rootReducer = combineReducers({
-  // Add your reducers here
+  app: appReducer,
+  // Add your other reducers here when you create them
   // expenses: expensesReducer,
   // categories: categoriesReducer,
 });
@@ -32,7 +34,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage: reduxStorage,
-  whitelist: ['expenses', 'categories'], // Add the reducers you want to persist
+  whitelist: ['app'], // Add the reducers you want to persist
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
