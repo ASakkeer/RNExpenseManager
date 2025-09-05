@@ -1,32 +1,28 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
+import {useAppStyles} from '../theme/hooks';
 
 const TransactionScreen: React.FC = () => {
+  const appStyles = useAppStyles();
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Transaction</Text>
-      <Text style={styles.subtitle}>Track your transactions</Text>
+    <View style={[appStyles.container, styles.container]}>
+      <Text style={[appStyles.title, styles.title]}>Transaction</Text>
+      <Text style={[appStyles.subtitle, styles.subtitle]}>Track your transactions</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
     paddingHorizontal: 20,
   },
   title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#333',
     marginBottom: 8,
   },
   subtitle: {
-    fontSize: 16,
-    color: '#666',
     textAlign: 'center',
   },
 });

@@ -1,27 +1,14 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Dimensions,
-  Platform,
-} from 'react-native';
-import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import {View, TouchableOpacity, StyleSheet, Platform} from 'react-native';
+import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
-  withTiming,
   withSpring,
-  Easing,
-  interpolate,
-  Extrapolate,
-  runOnJS,
 } from 'react-native-reanimated';
 // @ts-ignore
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
-const { width } = Dimensions.get('window');
+import {useAppColors} from '../theme/hooks';
 
 interface TabItemProps {
   route: any;
@@ -34,18 +21,14 @@ interface TabItemProps {
 
 const TabItem: React.FC<TabItemProps> = ({
   route,
-  index,
-  state,
+  index: _index,
+  state: _state,
   descriptors,
   navigation,
   isFocused,
 }) => {
-  const { options } = descriptors[route.key];
-  const label = options.tabBarLabel !== undefined
-    ? options.tabBarLabel
-    : options.title !== undefined
-    ? options.title
-    : route.name;
+  const colors = useAppColors();
+  const {options} = descriptors[route.key];
 
   const onPress = () => {
     const event = navigation.emit({
@@ -84,7 +67,6 @@ const TabItem: React.FC<TabItemProps> = ({
 
   // Animation values - all icons start at inactive size
   const scale = useSharedValue(1);
-  const iconColor = useSharedValue(isFocused ? 1 : 0);
 
   React.useEffect(() => {
     // Smooth spring animation for icon scaling - slight increase for active
@@ -93,55 +75,30 @@ const TabItem: React.FC<TabItemProps> = ({
       stiffness: 150,
       mass: 0.8,
     });
-
-    // Color transition for icon
-    iconColor.value = withTiming(isFocused ? 1 : 0, {
-      duration: 250,
-      easing: Easing.out(Easing.ease),
-    });
-  }, [isFocused]);
+  }, [isFocused, scale]);
 
   const iconAnimatedStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ scale: scale.value }],
-    };
-  });
-
-
-  const iconColorAnimatedStyle = useAnimatedStyle(() => {
-    const activeColor = '#007AFF';
-    const inactiveColor = '#8E8E93';
-    
-    const color = interpolate(
-      iconColor.value,
-      [0, 1],
-      [inactiveColor, activeColor],
-      Extrapolate.CLAMP
-    );
-
-    return {
-      color,
+      transform: [{scale: scale.value}],
     };
   });
 
   return (
     <TouchableOpacity
       accessibilityRole="button"
-      accessibilityState={isFocused ? { selected: true } : {}}
+      accessibilityState={isFocused ? {selected: true} : {}}
       accessibilityLabel={options.tabBarAccessibilityLabel}
       testID={options.tabBarTestID}
       onPress={onPress}
       onLongPress={onLongPress}
-      style={styles.tabItem}
-    >
+      style={styles.tabItem}>
       <Animated.View style={[styles.iconContainer, iconAnimatedStyle]}>
-        <Animated.View style={iconColorAnimatedStyle}>
-          <Icon
-            name={getIconName(route.name)}
-            size={24}
-            color={isFocused ? '#007AFF' : '#8E8E93'}
-          />
-        </Animated.View>
+        {/* @ts-ignore */}
+        <Icon
+          name={getIconName(route.name)}
+          size={24}
+          color={isFocused ? colors.primary : colors.onSurfaceVariant}
+        />
       </Animated.View>
     </TouchableOpacity>
   );
@@ -152,9 +109,11 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
   descriptors,
   navigation,
 }) => {
+  const colors = useAppColors();
+
   return (
-    <View style={styles.container}>
-      <View style={styles.tabBar}>
+    <View style={[styles.container, {backgroundColor: colors.background}]}>
+      <View style={[styles.tabBar, {backgroundColor: colors.surface}]}>
         {state.routes.map((route, index) => {
           const isFocused = state.index === index;
           return (
@@ -176,14 +135,12 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFFFFF',
     paddingBottom: 0,
     // Ensure no black background shows through
     borderTopWidth: 0,
   },
   tabBar: {
     flexDirection: 'row',
-    backgroundColor: '#FFFFFF', // Pure white background
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     paddingTop: 15,
@@ -198,7 +155,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.12,
     shadowRadius: 12,
     elevation: 16, // Higher elevation for Android
-    borderTopWidth: 0,
     // Add subtle border for definition
     borderTopColor: 'rgba(0, 0, 0, 0.05)',
     borderTopWidth: 0.5,
