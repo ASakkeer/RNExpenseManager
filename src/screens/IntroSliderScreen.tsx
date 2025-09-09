@@ -24,25 +24,19 @@ const IntroSliderScreen: React.FC<IntroSliderScreenProps> = ({navigation}) => {
       key: 'slide1',
       title: 'Ready to Track!',
       text: 'Start managing your expenses with ease. Track every transaction and take control of your finances.',
-      image: {
-        uri: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=300&fit=crop',
-      },
+      image: require('../../assets/images/onboarding/slide1.png'),
     },
     {
       key: 'slide2',
       title: 'Smart Categories',
       text: 'Organize your expenses automatically. Get insights into your spending patterns and budget better.',
-      image: {
-        uri: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop',
-      },
+      image: require('../../assets/images/onboarding/slide2.png'),
     },
     {
       key: 'slide3',
       title: 'Smart Analytics',
       text: 'Generate detailed reports and visual charts to understand your financial habits and make better decisions.',
-      image: {
-        uri: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop',
-      },
+      image: require('../../assets/images/onboarding/slide3.png'),
     },
   ];
 
