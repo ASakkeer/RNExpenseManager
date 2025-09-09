@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef, useEffect, useState, useMemo} from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  Animated,
 } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import {useAppColors} from '../theme/hooks';
@@ -18,27 +19,87 @@ interface IntroSliderScreenProps {
 
 const IntroSliderScreen: React.FC<IntroSliderScreenProps> = ({navigation}) => {
   const colors = useAppColors();
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const slides = [
-    {
-      key: 'slide1',
-      title: 'Ready to Track!',
-      text: 'Start managing your expenses with ease. Track every transaction and take control of your finances.',
-      image: require('../../assets/images/onboarding/slide1.png'),
-    },
-    {
-      key: 'slide2',
-      title: 'Smart Categories',
-      text: 'Organize your expenses automatically. Get insights into your spending patterns and budget better.',
-      image: require('../../assets/images/onboarding/slide2.png'),
-    },
-    {
-      key: 'slide3',
-      title: 'Smart Analytics',
-      text: 'Generate detailed reports and visual charts to understand your financial habits and make better decisions.',
-      image: require('../../assets/images/onboarding/slide3.png'),
-    },
-  ];
+  const slides = useMemo(
+    () => [
+      {
+        key: 'slide1',
+        title: 'Ready to Track!',
+        text: 'Start managing your expenses with ease. Track every transaction and take control of your finances.',
+        image: require('../../assets/images/onboarding/slide1.png'),
+      },
+      {
+        key: 'slide2',
+        title: 'Smart Categories',
+        text: 'Organize your expenses automatically. Get insights into your spending patterns and budget better.',
+        image: require('../../assets/images/onboarding/slide2.png'),
+      },
+      {
+        key: 'slide3',
+        title: 'Smart Analytics',
+        text: 'Generate detailed reports and visual charts to understand your financial habits and make better decisions.',
+        image: require('../../assets/images/onboarding/slide3.png'),
+      },
+    ],
+    [],
+  );
+
+  const animatedValues = useRef(
+    slides.map(() => new Animated.Value(0)),
+  ).current;
+
+  // Custom dot component with smooth transitions
+  const renderPagination = (currentIndex: number) => {
+    return (
+      <View style={styles.paginationContainer}>
+        {slides.map((_, index) => {
+          const isActive = index === currentIndex;
+          const animatedValue = animatedValues[index];
+
+          const dotWidth = animatedValue.interpolate({
+            inputRange: [0, 1],
+            outputRange: [8, 24], // Expands from 8 to 24 when active
+          });
+
+          const dotOpacity = animatedValue.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0.3, 1], // Fades when inactive
+          });
+
+          return (
+            <Animated.View
+              key={index}
+              style={[
+                styles.customDot,
+                {
+                  width: dotWidth,
+                  opacity: dotOpacity,
+                  backgroundColor: isActive
+                    ? colors.primary
+                    : colors.onSurfaceVariant,
+                },
+              ]}
+            />
+          );
+        })}
+      </View>
+    );
+  };
+
+  // Animate dots when activeIndex changes
+  useEffect(() => {
+    slides.forEach((_, index) => {
+      const isActive = index === activeIndex;
+      const animatedValue = animatedValues[index];
+
+      Animated.timing(animatedValue, {
+        toValue: isActive ? 1 : 0,
+        duration: 300,
+        useNativeDriver: false,
+      }).start();
+    });
+  }, [activeIndex, animatedValues, slides]);
 
   const renderSlide = ({item, index}: {item: any; index: number}) => {
     return (
@@ -47,7 +108,7 @@ const IntroSliderScreen: React.FC<IntroSliderScreenProps> = ({navigation}) => {
         <View style={styles.imageContainer}>
           <Image source={item.image} style={styles.image} />
         </View>
-        
+
         {/* Content section - second half */}
         <View style={styles.contentContainer}>
           <Text style={[styles.title, {color: colors.onBackground}]}>
@@ -66,7 +127,8 @@ const IntroSliderScreen: React.FC<IntroSliderScreenProps> = ({navigation}) => {
                   {backgroundColor: colors.primary},
                 ]}
                 onPress={onDone}>
-                <Text style={[styles.getStartedText, {color: colors.onPrimary}]}>
+                <Text
+                  style={[styles.getStartedText, {color: colors.onPrimary}]}>
                   Okay, Let's Get Started!
                 </Text>
               </TouchableOpacity>
@@ -101,8 +163,8 @@ const IntroSliderScreen: React.FC<IntroSliderScreenProps> = ({navigation}) => {
       showPrevButton={true}
       showNextButton={true}
       showDoneButton={false}
-      activeDotStyle={styles.activeDot}
-      dotStyle={styles.navDot}
+      renderPagination={renderPagination}
+      onSlideChange={(index: number) => setActiveIndex(index)}
     />
   );
 };
@@ -165,19 +227,17 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textDecorationLine: 'underline',
   },
-  activeDot: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    marginHorizontal: 4,
-    backgroundColor: '#007BFF',
+  paginationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 20,
+    paddingHorizontal: 20,
   },
-  navDot: {
-    width: 8,
+  customDot: {
     height: 8,
     borderRadius: 4,
     marginHorizontal: 4,
-    backgroundColor: '#F4F4F4',
   },
   button: {
     borderRadius: 8,
