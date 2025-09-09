@@ -132,12 +132,6 @@ const IntroSliderScreen: React.FC<IntroSliderScreenProps> = ({navigation}) => {
                   Okay, Let's Get Started!
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                <Text
-                  style={[styles.loginLink, {color: colors.onSurfaceVariant}]}>
-                  I already have an account
-                </Text>
-              </TouchableOpacity>
             </View>
           )}
         </View>
@@ -222,10 +216,6 @@ const styles = StyleSheet.create({
   getStartedText: {
     fontSize: 16,
     fontWeight: '600',
-  },
-  loginLink: {
-    fontSize: 14,
-    textDecorationLine: 'underline',
   },
   paginationContainer: {
     flexDirection: 'row',
