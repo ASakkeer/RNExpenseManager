@@ -9,6 +9,12 @@ import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import MainTabs from './MainTabs';
 
+// Import registration screens
+import NameScreen from '../screens/registration/NameScreen';
+import GenderScreen from '../screens/registration/GenderScreen';
+import DateOfBirthScreen from '../screens/registration/DateOfBirthScreen';
+import ProfilePhotoScreen from '../screens/registration/ProfilePhotoScreen';
+
 // Import theme and store
 import {useAppSelector} from '../store/hooks';
 import {lightTheme, darkTheme} from '../theme';
@@ -74,6 +80,34 @@ const AppNavigator = () => {
             component={RegisterScreen}
             options={{
               title: 'Register',
+            }}
+          />
+          <Stack.Screen
+            name="Name"
+            component={NameScreen}
+            options={{
+              title: 'Name',
+            }}
+          />
+          <Stack.Screen
+            name="Gender"
+            component={GenderScreen}
+            options={{
+              title: 'Gender',
+            }}
+          />
+          <Stack.Screen
+            name="DateOfBirth"
+            component={DateOfBirthScreen}
+            options={{
+              title: 'Date of Birth',
+            }}
+          />
+          <Stack.Screen
+            name="ProfilePhoto"
+            component={ProfilePhotoScreen}
+            options={{
+              title: 'Profile Photo',
             }}
           />
           <Stack.Screen

@@ -100,38 +100,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
             </Text>
           </TouchableOpacity>
         </View>
-
-        {/* Social Login */}
-        <View style={styles.socialContainer}>
-          <View style={styles.separatorContainer}>
-            <View
-              style={[
-                styles.separatorLine,
-                {backgroundColor: colors.onSurfaceVariant},
-              ]}
-            />
-            <Text style={[styles.orText, {color: colors.onSurfaceVariant}]}>
-              Or Login with
-            </Text>
-            <View
-              style={[
-                styles.separatorLine,
-                {backgroundColor: colors.onSurfaceVariant},
-              ]}
-            />
-          </View>
-          <View style={styles.socialButtons}>
-            <TouchableOpacity style={styles.socialButton}>
-              <Text style={styles.socialIcon}>f</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.socialButton}>
-              <Text style={styles.socialIcon}>G</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.socialButton}>
-              <Text style={styles.socialIcon}>🍎</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
       </SafeAreaView>
 
       {/* Register Link - Fixed to bottom */}
@@ -246,54 +214,6 @@ const styles = StyleSheet.create({
   loginButtonText: {
     fontSize: 16,
     fontWeight: '600',
-  },
-  socialContainer: {
-    alignItems: 'center',
-    marginBottom: 40,
-  },
-  separatorContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    marginBottom: 24,
-  },
-  separatorLine: {
-    flex: 1,
-    height: 1,
-    opacity: 0.3,
-  },
-  orText: {
-    fontSize: 14,
-    marginHorizontal: 16,
-    fontWeight: '500',
-  },
-  socialButtons: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  socialButton: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: '#F8F9FA',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: 12,
-    borderWidth: 1,
-    borderColor: '#E8EAED',
-    // shadowColor: '#000',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 1,
-    // },
-    // shadowOpacity: 0.05,
-    // shadowRadius: 2,
-    // elevation: 1,
-  },
-  socialIcon: {
-    fontSize: 20,
-    fontWeight: 'bold',
   },
   registerContainer: {
     flexDirection: 'row',
