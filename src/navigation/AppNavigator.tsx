@@ -15,14 +15,14 @@ import {lightTheme, darkTheme} from '../theme';
 const Stack = createStackNavigator();
 
 const AppNavigator = () => {
-  const {theme} = useAppSelector(state => state.app);
-  const currentTheme = theme === 'dark' ? darkTheme : lightTheme;
+  // Always use light theme to ensure white backgrounds
+  const currentTheme = lightTheme;
 
   return (
     <SafeAreaProvider>
       <NavigationContainer
         theme={{
-          dark: theme === 'dark',
+          dark: false,
           colors: {
             primary: currentTheme.colors.primary,
             background: currentTheme.colors.background,

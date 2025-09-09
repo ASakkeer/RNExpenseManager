@@ -89,36 +89,37 @@ export const darkTheme = {
     primaryContainer: '#1A237E',
     onPrimaryContainer: '#E3F2FD',
     
-    background: '#121212',
-    onBackground: '#FFFFFF',
-    surface: '#1E1E1E',
-    onSurface: '#FFFFFF',
+    // Force white backgrounds even in dark mode
+    background: '#FFFFFF',
+    onBackground: '#0A0A0A',
+    surface: '#FFFFFF',
+    onSurface: '#0A0A0A',
     
-    surfaceVariant: '#2A2A2A',
-    onSurfaceVariant: '#B0B0B0',
-    outline: '#404040',
+    surfaceVariant: '#F4F4F4',
+    onSurfaceVariant: '#6E6E6E',
+    outline: '#F4F4F4',
     
     error: '#F2B8B5',
     onError: '#601410',
     errorContainer: '#8C1D18',
     onErrorContainer: '#F9DEDC',
     
-    secondary: '#B0B0B0',
-    onSecondary: '#1A1A1A',
-    secondaryContainer: '#2A2A2A',
-    onSecondaryContainer: '#E0E0E0',
+    secondary: '#6E6E6E',
+    onSecondary: '#FFFFFF',
+    secondaryContainer: '#F4F4F4',
+    onSecondaryContainer: '#0A0A0A',
     
     tertiary: '#007BFF',
     onTertiary: '#FFFFFF',
     tertiaryContainer: '#1A237E',
     onTertiaryContainer: '#E3F2FD',
     
-    surfaceDisabled: '#2A2A2A',
-    onSurfaceDisabled: '#666666',
+    surfaceDisabled: '#F4F4F4',
+    onSurfaceDisabled: '#6E6E6E',
     
     shadow: '#000000',
-    inverseOnSurface: '#1A1A1A',
-    inverseSurface: '#E0E0E0',
+    inverseOnSurface: '#FFFFFF',
+    inverseSurface: '#0A0A0A',
     inversePrimary: '#007BFF',
     backdrop: 'rgba(0, 0, 0, 0.5)',
     

@@ -13,15 +13,15 @@ import AppNavigator from './src/navigation/AppNavigator';
 import {lightTheme, darkTheme} from './src/theme';
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  const theme = isDarkMode ? darkTheme : lightTheme;
+  // Always use light theme to ensure white backgrounds
+  const theme = lightTheme;
 
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <PaperProvider theme={theme}>
           <StatusBar
-            barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+            barStyle="dark-content"
             backgroundColor={theme.colors.background}
           />
           <AppNavigator />

@@ -1,7 +1,16 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
-import {useAppColors, useAppStyles} from '../theme/hooks';
+import {useAppColors} from '../theme/hooks';
+
+const {width} = Dimensions.get('window');
 
 interface IntroSliderScreenProps {
   navigation: any;
@@ -9,36 +18,35 @@ interface IntroSliderScreenProps {
 
 const IntroSliderScreen: React.FC<IntroSliderScreenProps> = ({navigation}) => {
   const colors = useAppColors();
-  const appStyles = useAppStyles();
 
   const slides = [
     {
       key: 'slide1',
-      title: 'Welcome to Expense Manager',
-      text: 'Track your expenses and manage your finances with ease. Get started with our intuitive interface.',
+      title: 'Ready to Track!',
+      text: 'Start managing your expenses with ease. Track every transaction and take control of your finances.',
       image: {
         uri: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=300&fit=crop',
       },
     },
     {
       key: 'slide2',
-      title: 'Smart Categorization',
-      text: 'Automatically categorize your expenses and get insights into your spending patterns.',
+      title: 'Smart Categories',
+      text: 'Organize your expenses automatically. Get insights into your spending patterns and budget better.',
       image: {
         uri: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop',
       },
     },
     {
       key: 'slide3',
-      title: 'Detailed Reports',
-      text: 'Generate comprehensive reports and charts to understand your financial habits better.',
+      title: 'Smart Analytics',
+      text: 'Generate detailed reports and visual charts to understand your financial habits and make better decisions.',
       image: {
         uri: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop',
       },
     },
   ];
 
-  const renderSlide = ({item}: {item: any}) => {
+  const renderSlide = ({item, index}: {item: any; index: number}) => {
     return (
       <View style={[styles.slide, {backgroundColor: colors.background}]}>
         <Image source={item.image} style={styles.image} />
@@ -48,6 +56,28 @@ const IntroSliderScreen: React.FC<IntroSliderScreenProps> = ({navigation}) => {
         <Text style={[styles.text, {color: colors.onSurfaceVariant}]}>
           {item.text}
         </Text>
+
+        {/* Show button only on last slide */}
+        {index === 2 && (
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={[
+                styles.getStartedButton,
+                {backgroundColor: colors.primary},
+              ]}
+              onPress={onDone}>
+              <Text style={[styles.getStartedText, {color: colors.onPrimary}]}>
+                Okay, Let's Get Started!
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+              <Text
+                style={[styles.loginLink, {color: colors.onSurfaceVariant}]}>
+                I already have an account
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     );
   };
@@ -69,15 +99,9 @@ const IntroSliderScreen: React.FC<IntroSliderScreenProps> = ({navigation}) => {
       showSkipButton={true}
       showPrevButton={true}
       showNextButton={true}
-      activeDotStyle={[styles.activeDot, {backgroundColor: colors.primary}]}
-      dotStyle={[styles.dot, {backgroundColor: colors.outline}]}
-      skipLabelStyle={[styles.buttonLabel, {color: colors.onSurfaceVariant}]}
-      nextLabelStyle={[styles.buttonLabel, {color: colors.primary}]}
-      prevLabelStyle={[styles.buttonLabel, {color: colors.onSurfaceVariant}]}
-      doneLabelStyle={[styles.buttonLabel, {color: colors.primary}]}
-      buttonStyle={[styles.button, {backgroundColor: colors.surface}]}
-      skipButtonStyle={[styles.skipButton, {backgroundColor: colors.surface}]}
-      doneButtonStyle={[styles.doneButton, {backgroundColor: colors.primary}]}
+      showDoneButton={false}
+      activeDotStyle={styles.activeDot}
+      dotStyle={styles.navDot}
     />
   );
 };
@@ -90,8 +114,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   image: {
-    width: 300,
-    height: 200,
+    width: width * 0.7,
+    height: width * 0.5,
     marginBottom: 40,
     borderRadius: 12,
   },
@@ -108,17 +132,42 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     paddingHorizontal: 20,
   },
+  buttonContainer: {
+    position: 'absolute',
+    bottom: 100,
+    left: 20,
+    right: 20,
+    alignItems: 'center',
+  },
+  getStartedButton: {
+    borderRadius: 25,
+    paddingHorizontal: 40,
+    paddingVertical: 15,
+    marginBottom: 20,
+    minWidth: width * 0.8,
+    alignItems: 'center',
+  },
+  getStartedText: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  loginLink: {
+    fontSize: 14,
+    textDecorationLine: 'underline',
+  },
   activeDot: {
     width: 12,
     height: 12,
     borderRadius: 6,
     marginHorizontal: 4,
+    backgroundColor: '#007BFF',
   },
-  dot: {
+  navDot: {
     width: 8,
     height: 8,
     borderRadius: 4,
     marginHorizontal: 4,
+    backgroundColor: '#F4F4F4',
   },
   button: {
     borderRadius: 8,
@@ -126,11 +175,6 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   skipButton: {
-    borderRadius: 8,
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-  },
-  doneButton: {
     borderRadius: 8,
     paddingHorizontal: 20,
     paddingVertical: 12,
