@@ -43,35 +43,42 @@ const IntroSliderScreen: React.FC<IntroSliderScreenProps> = ({navigation}) => {
   const renderSlide = ({item, index}: {item: any; index: number}) => {
     return (
       <View style={[styles.slide, {backgroundColor: colors.background}]}>
-        <Image source={item.image} style={styles.image} />
-        <Text style={[styles.title, {color: colors.onBackground}]}>
-          {item.title}
-        </Text>
-        <Text style={[styles.text, {color: colors.onSurfaceVariant}]}>
-          {item.text}
-        </Text>
+        {/* Image section - first half */}
+        <View style={styles.imageContainer}>
+          <Image source={item.image} style={styles.image} />
+        </View>
+        
+        {/* Content section - second half */}
+        <View style={styles.contentContainer}>
+          <Text style={[styles.title, {color: colors.onBackground}]}>
+            {item.title}
+          </Text>
+          <Text style={[styles.text, {color: colors.onSurfaceVariant}]}>
+            {item.text}
+          </Text>
 
-        {/* Show button only on last slide */}
-        {index === 2 && (
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={[
-                styles.getStartedButton,
-                {backgroundColor: colors.primary},
-              ]}
-              onPress={onDone}>
-              <Text style={[styles.getStartedText, {color: colors.onPrimary}]}>
-                Okay, Let's Get Started!
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-              <Text
-                style={[styles.loginLink, {color: colors.onSurfaceVariant}]}>
-                I already have an account
-              </Text>
-            </TouchableOpacity>
-          </View>
-        )}
+          {/* Show button only on last slide */}
+          {index === 2 && (
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={[
+                  styles.getStartedButton,
+                  {backgroundColor: colors.primary},
+                ]}
+                onPress={onDone}>
+                <Text style={[styles.getStartedText, {color: colors.onPrimary}]}>
+                  Okay, Let's Get Started!
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                <Text
+                  style={[styles.loginLink, {color: colors.onSurfaceVariant}]}>
+                  I already have an account
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
       </View>
     );
   };
@@ -103,35 +110,44 @@ const IntroSliderScreen: React.FC<IntroSliderScreenProps> = ({navigation}) => {
 const styles = StyleSheet.create({
   slide: {
     flex: 1,
-    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  imageContainer: {
+    flex: 1,
     justifyContent: 'center',
-    paddingHorizontal: 20,
+    alignItems: 'center',
+    paddingHorizontal: 10,
   },
   image: {
-    width: width * 0.7,
-    height: width * 0.5,
-    marginBottom: 40,
+    width: width * 0.8,
+    height: '100%',
+    resizeMode: 'contain',
     borderRadius: 12,
+  },
+  contentContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 30,
+    paddingVertical: 20,
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 20,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
   },
   text: {
     fontSize: 16,
     textAlign: 'center',
     lineHeight: 24,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
+    marginBottom: 30,
   },
   buttonContainer: {
-    position: 'absolute',
-    bottom: 100,
-    left: 20,
-    right: 20,
     alignItems: 'center',
+    width: '100%',
   },
   getStartedButton: {
     borderRadius: 25,
