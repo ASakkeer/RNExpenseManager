@@ -6,6 +6,7 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 // Import screens
 import IntroSliderScreen from '../screens/IntroSliderScreen';
 import LoginScreen from '../screens/LoginScreen';
+import RegisterScreen from '../screens/RegisterScreen';
 import MainTabs from './MainTabs';
 
 // Import theme and store
@@ -66,6 +67,13 @@ const AppNavigator = () => {
             component={LoginScreen}
             options={{
               title: 'Login',
+            }}
+          />
+          <Stack.Screen
+            name="Register"
+            component={RegisterScreen}
+            options={{
+              title: 'Register',
             }}
           />
           <Stack.Screen

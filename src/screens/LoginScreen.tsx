@@ -24,8 +24,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
   };
 
   const handleRegister = () => {
-    // Navigate to register screen when implemented
-    console.log('Navigate to register');
+    navigation.navigate('Register');
   };
 
   const handleForgotPassword = () => {
