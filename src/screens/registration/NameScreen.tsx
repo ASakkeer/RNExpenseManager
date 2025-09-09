@@ -6,11 +6,8 @@ import {
   TextInput,
   TouchableOpacity,
   SafeAreaView,
-  Dimensions,
 } from 'react-native';
 import {useAppColors} from '../../theme/hooks';
-
-const {width, height} = Dimensions.get('window');
 
 interface NameScreenProps {
   navigation: any;
@@ -45,7 +42,8 @@ const NameScreen: React.FC<NameScreenProps> = ({navigation}) => {
             </Text>
           </TouchableOpacity>
           <View style={styles.progressContainer}>
-            <Text style={[styles.progressText, {color: colors.onSurfaceVariant}]}>
+            <Text
+              style={[styles.progressText, {color: colors.onSurfaceVariant}]}>
               1/4
             </Text>
           </View>
@@ -88,7 +86,9 @@ const NameScreen: React.FC<NameScreenProps> = ({navigation}) => {
             style={[
               styles.bottomButton,
               {
-                backgroundColor: isFormValid ? colors.primary : colors.onSurfaceVariant,
+                backgroundColor: isFormValid
+                  ? colors.primary
+                  : colors.onSurfaceVariant,
               },
             ]}
             onPress={handleNext}
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   },
   safeArea: {
     flex: 1,
-    paddingHorizontal: 24,
+    paddingHorizontal: 15,
   },
   header: {
     flexDirection: 'row',
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   progressContainer: {
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 12,
+    borderRadius: 8,
     backgroundColor: 'rgba(0, 0, 0, 0.05)',
   },
   progressText: {
@@ -159,29 +159,21 @@ const styles = StyleSheet.create({
     height: 60,
     borderWidth: 2,
     borderColor: '#E5E7EB',
-    borderRadius: 16,
+    borderRadius: 8,
     paddingHorizontal: 20,
     fontSize: 18,
     backgroundColor: '#FFFFFF',
     textAlign: 'center',
   },
   bottomButtonContainer: {
-    paddingHorizontal: 15,
-    paddingBottom: 40,
+    paddingVertical: 15,
   },
   bottomButton: {
     height: 56,
-    borderRadius: 16,
+    borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    width: '100%',
   },
   bottomButtonText: {
     fontSize: 18,

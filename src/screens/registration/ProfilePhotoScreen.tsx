@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   },
   safeArea: {
     flex: 1,
-    paddingHorizontal: 24,
+    paddingHorizontal: 15,
   },
   header: {
     flexDirection: 'row',
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
   progressContainer: {
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 12,
+    borderRadius: 8,
     backgroundColor: 'rgba(0, 0, 0, 0.05)',
   },
   progressText: {
@@ -201,15 +201,7 @@ const styles = StyleSheet.create({
   addPhotoButton: {
     paddingHorizontal: 32,
     paddingVertical: 16,
-    borderRadius: 16,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    borderRadius: 8,
   },
   addPhotoText: {
     fontSize: 18,
@@ -219,17 +211,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 15,
-    paddingBottom: 40,
+    paddingVertical: 15,
+    gap: 10,
   },
   skipButton: {
     flex: 1,
     height: 56,
-    borderRadius: 16,
+    borderRadius: 8,
     borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 10,
   },
   skipText: {
     fontSize: 18,
@@ -238,18 +229,9 @@ const styles = StyleSheet.create({
   nextButton: {
     flex: 1,
     height: 56,
-    borderRadius: 16,
+    borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
   },
   nextButtonText: {
     fontSize: 18,

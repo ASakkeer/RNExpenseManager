@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -6,136 +6,57 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Dimensions,
-  ScrollView,
 } from 'react-native';
+import DatePicker from 'react-native-date-picker';
 import {useAppColors} from '../../theme/hooks';
 
-const {width, height} = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 interface DateOfBirthScreenProps {
   navigation: any;
   route: any;
 }
 
-const DateOfBirthScreen: React.FC<DateOfBirthScreenProps> = ({navigation, route}) => {
+const DateOfBirthScreen: React.FC<DateOfBirthScreenProps> = ({
+  navigation,
+  route,
+}) => {
   const colors = useAppColors();
   const {firstName, lastName, gender} = route.params || {};
-  
-  const [selectedMonth, setSelectedMonth] = useState<string>('Jun');
-  const [selectedDay, setSelectedDay] = useState<string>('17');
-  const [selectedYear, setSelectedYear] = useState<string>('1992');
 
-  const monthScrollRef = useRef<ScrollView>(null);
-  const dayScrollRef = useRef<ScrollView>(null);
-  const yearScrollRef = useRef<ScrollView>(null);
-
-  const months = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-  ];
-
-  const days = Array.from({length: 31}, (_, i) => (i + 1).toString());
-  const years = Array.from({length: 100}, (_, i) => (2024 - i).toString());
-
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date(1992, 5, 17)); // June 17, 1992
 
   const handleNext = () => {
     navigation.navigate('ProfilePhoto', {
       firstName,
       lastName,
       gender,
-      dateOfBirth: {
-        month: selectedMonth,
-        day: selectedDay,
-        year: selectedYear,
-      },
+      dateOfBirth: selectedDate,
     });
   };
 
-  const isFormValid = selectedMonth && selectedDay && selectedYear;
+  const isFormValid = selectedDate !== null;
 
   const formatSelectedDate = () => {
     const monthNames = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
     ];
-    const monthIndex = months.indexOf(selectedMonth);
-    const fullMonthName = monthNames[monthIndex];
-    return `${fullMonthName} ${selectedDay}, ${selectedYear}`;
+    const month = monthNames[selectedDate.getMonth()];
+    const day = selectedDate.getDate();
+    const year = selectedDate.getFullYear();
+    return `${month} ${day}, ${year}`;
   };
-
-
-  const scrollToCenter = (scrollRef: React.RefObject<ScrollView>, index: number) => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTo({
-        y: index * 48, // 48px per item height (44px + 4px margin)
-        animated: true,
-      });
-    }
-  };
-
-  const handleMonthSelect = (month: string) => {
-    const index = months.indexOf(month);
-    setSelectedMonth(month);
-    scrollToCenter(monthScrollRef, index);
-  };
-
-  const handleDaySelect = (day: string) => {
-    const index = days.indexOf(day);
-    setSelectedDay(day);
-    scrollToCenter(dayScrollRef, index);
-  };
-
-  const handleYearSelect = (year: string) => {
-    const index = years.indexOf(year);
-    setSelectedYear(year);
-    scrollToCenter(yearScrollRef, index);
-  };
-
-  const renderPickerColumn = (
-    data: string[],
-    selectedValue: string,
-    onSelect: (value: string) => void,
-    scrollRef: React.RefObject<ScrollView>
-  ) => {
-    return (
-      <ScrollView
-        ref={scrollRef}
-        style={styles.pickerColumn}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.pickerContent}>
-        {data.map((item, index) => {
-          const isSelected = selectedValue === item;
-
-          return (
-            <View key={item} style={styles.pickerItemContainer}>
-              <TouchableOpacity
-                style={[
-                  styles.pickerItem,
-                  {
-                    backgroundColor: isSelected ? colors.primary : '#F3F4F6',
-                    borderColor: isSelected ? colors.primary : '#E5E7EB',
-                    borderWidth: isSelected ? 0 : 1,
-                  },
-                ]}
-                onPress={() => onSelect(item)}>
-                <Text
-                  style={[
-                    styles.pickerItemText,
-                    {
-                      color: isSelected ? colors.onPrimary : colors.onBackground,
-                      fontWeight: isSelected ? '600' : '400',
-                    },
-                  ]}>
-                  {item}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          );
-        })}
-      </ScrollView>
-    );
-  };
-
 
   return (
     <View style={[styles.container, {backgroundColor: colors.background}]}>
@@ -150,7 +71,8 @@ const DateOfBirthScreen: React.FC<DateOfBirthScreenProps> = ({navigation, route}
             </Text>
           </TouchableOpacity>
           <View style={styles.progressContainer}>
-            <Text style={[styles.progressText, {color: colors.onSurfaceVariant}]}>
+            <Text
+              style={[styles.progressText, {color: colors.onSurfaceVariant}]}>
               3/4
             </Text>
           </View>
@@ -163,34 +85,27 @@ const DateOfBirthScreen: React.FC<DateOfBirthScreenProps> = ({navigation, route}
           </Text>
 
           <View style={styles.datePickerContainer}>
-            {/* Month Column */}
-            <View style={styles.columnContainer}>
-              <Text style={[styles.columnLabel, {color: colors.onSurfaceVariant}]}>
-                Month
-              </Text>
-              {renderPickerColumn(months, selectedMonth, handleMonthSelect, monthScrollRef)}
-            </View>
-
-            {/* Day Column */}
-            <View style={styles.columnContainer}>
-              <Text style={[styles.columnLabel, {color: colors.onSurfaceVariant}]}>
-                Day
-              </Text>
-              {renderPickerColumn(days, selectedDay, handleDaySelect, dayScrollRef)}
-            </View>
-
-            {/* Year Column */}
-            <View style={styles.columnContainer}>
-              <Text style={[styles.columnLabel, {color: colors.onSurfaceVariant}]}>
-                Year
-              </Text>
-              {renderPickerColumn(years, selectedYear, handleYearSelect, yearScrollRef)}
+            <View style={styles.datePickerWrapper}>
+              <DatePicker
+                date={selectedDate}
+                onDateChange={setSelectedDate}
+                mode="date"
+                locale="en"
+                theme="light"
+                style={styles.datePicker}
+                maximumDate={new Date()}
+                minimumDate={new Date(1900, 0, 1)}
+              />
             </View>
           </View>
 
           {/* Selected Date Display */}
           <View style={styles.selectedDateContainer}>
-            <Text style={[styles.selectedDateLabel, {color: colors.onSurfaceVariant}]}>
+            <Text
+              style={[
+                styles.selectedDateLabel,
+                {color: colors.onSurfaceVariant},
+              ]}>
               Your birthday is
             </Text>
             <Text style={[styles.selectedDateText, {color: colors.primary}]}>
@@ -205,7 +120,9 @@ const DateOfBirthScreen: React.FC<DateOfBirthScreenProps> = ({navigation, route}
             style={[
               styles.bottomButton,
               {
-                backgroundColor: isFormValid ? colors.primary : colors.onSurfaceVariant,
+                backgroundColor: isFormValid
+                  ? colors.primary
+                  : colors.onSurfaceVariant,
               },
             ]}
             onPress={handleNext}
@@ -226,7 +143,7 @@ const styles = StyleSheet.create({
   },
   safeArea: {
     flex: 1,
-    paddingHorizontal: 24,
+    paddingHorizontal: 15,
   },
   header: {
     flexDirection: 'row',
@@ -248,7 +165,7 @@ const styles = StyleSheet.create({
   progressContainer: {
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 12,
+    borderRadius: 8,
     backgroundColor: 'rgba(0, 0, 0, 0.05)',
   },
   progressText: {
@@ -267,43 +184,21 @@ const styles = StyleSheet.create({
     lineHeight: 40,
   },
   datePickerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
+    alignItems: 'center',
     marginBottom: 40,
-  },
-  columnContainer: {
-    flex: 1,
-    alignItems: 'center',
-    marginHorizontal: 8,
-  },
-  columnLabel: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 20,
-  },
-  pickerColumn: {
-    height: 180,
-    width: '100%',
-  },
-  pickerContent: {
-    paddingVertical: 10,
-  },
-  pickerItemContainer: {
-    marginVertical: 2,
-  },
-  pickerItem: {
-    paddingVertical: 14,
-    paddingHorizontal: 12,
+    backgroundColor: '#FFFFFF',
     borderRadius: 8,
-    alignItems: 'center',
-    minWidth: 50,
-    minHeight: 44,
-    justifyContent: 'center',
+    padding: 16,
   },
-  pickerItemText: {
-    fontSize: 16,
-    fontWeight: '400',
+  datePickerWrapper: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  datePicker: {
+    width: width * 0.8,
+    height: 200,
+    backgroundColor: '#FFFFFF',
   },
   selectedDateContainer: {
     alignItems: 'center',
@@ -318,22 +213,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   bottomButtonContainer: {
-    paddingHorizontal: 15,
-    paddingBottom: 40,
+    paddingVertical: 15,
   },
   bottomButton: {
     height: 56,
-    borderRadius: 16,
+    borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    width: '100%',
   },
   bottomButtonText: {
     fontSize: 18,

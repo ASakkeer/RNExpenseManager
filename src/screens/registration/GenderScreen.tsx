@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   },
   safeArea: {
     flex: 1,
-    paddingHorizontal: 24,
+    paddingHorizontal: 15,
   },
   header: {
     flexDirection: 'row',
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
   progressContainer: {
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 12,
+    borderRadius: 8,
     backgroundColor: 'rgba(0, 0, 0, 0.05)',
   },
   progressText: {
@@ -194,17 +194,9 @@ const styles = StyleSheet.create({
   genderCard: {
     height: 120,
     borderWidth: 2,
-    borderRadius: 20,
+    borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
   },
   genderSymbol: {
     fontSize: 48,
@@ -215,22 +207,14 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   bottomButtonContainer: {
-    paddingHorizontal: 15,
-    paddingBottom: 40,
+    paddingVertical: 15,
   },
   bottomButton: {
     height: 56,
-    borderRadius: 16,
+    borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    width: '100%',
   },
   bottomButtonText: {
     fontSize: 18,
